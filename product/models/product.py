@@ -7,6 +7,8 @@ from decimal import Decimal
 
 class CategoryModel(AbstractBaseModel):
     name = models.CharField(max_length=150, verbose_name=_("Kategoriya nomi"))
+    image = models.ImageField(upload_to='category/', verbose_name=_("Kategorya rasmi"))
+    
 
     def __str__(self):
         return self.name

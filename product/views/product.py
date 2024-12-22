@@ -5,13 +5,13 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from ..models import ProductModel, ProductImage
+from ..models import ProductModel, CategoryModel
 from ..serializers.product import (
         CreateProductSerializer,
         ListProductSerializer,
         RetrieveProductSerializer,
         ProductListSerializer,
-        ProductImageSerializer
+        CategorySerializer
     )
 
 
@@ -20,6 +20,11 @@ class ProductView(ReadOnlyModelViewSet):
     serializer_class = ProductListSerializer
 
 
+
+class CategoryView(ReadOnlyModelViewSet):
+    queryset = CategoryModel.objects.all()
+    serializer_class = CategorySerializer
+    
 
 @extend_schema(tags=["product"])
 class ProductDetailView(BaseViewSetMixin, ReadOnlyModelViewSet):

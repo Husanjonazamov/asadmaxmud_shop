@@ -19,7 +19,6 @@ dp = Dispatcher()
 logging.basicConfig(level=logging.INFO) 
 
 
-
 @dp.message(Command('start'))
 async def start_handler(message: types.Message):
     first_name = message.from_user.first_name 
@@ -36,7 +35,7 @@ async def start_handler(message: types.Message):
         
     await message.answer(texts.START.format(first_name))
 
-    
+
 
 async def set_bot_menu():
     await bot.set_my_commands(
@@ -55,5 +54,6 @@ async def set_bot_menu():
 async def main():
     await set_bot_menu()
     await dp.start_polling(bot)
+
 
 asyncio.run(main())

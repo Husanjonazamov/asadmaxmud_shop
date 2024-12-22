@@ -15,7 +15,7 @@ from ...models import (
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryModel
-        fields = ['id', 'name']
+        fields = ['id', 'image', 'name']
 
 
 class ColorSerializer(serializers.ModelSerializer):
