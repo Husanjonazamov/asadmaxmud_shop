@@ -1,0 +1,4 @@
+START = \
+"""
+Assalomu alaykum {}
+"""

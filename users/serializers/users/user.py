@@ -3,6 +3,7 @@ from rest_framework import serializers
 from ...models import UserModel
 
 
+
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
