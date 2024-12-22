@@ -19,7 +19,23 @@ class CategoryModel(AbstractBaseModel):
 
 
 class Color(models.Model):
+    COLOR_CHOICES = [
+        ("Ko'k", "Ko'k"),
+        ('Qizil', 'Qizil'),
+        ('Qora', 'Qora'),
+        ('Yashil', 'Yashil'),
+        ('Oq', 'Oq'),
+        ('Sariq', 'Sariq'),
+        ('Kulrang', 'Kulrang'),
+        ('Jigarrang', 'Jigarrang'),
+        ('Pushti', 'Pushti'),
+        ('Siyohrang', 'Siyohrang'),
+    ]
+    name = models.CharField(max_length=55, choices=COLOR_CHOICES, verbose_name=_('nomini kiriting'))
     image = models.ImageField(upload_to='color/', verbose_name=_("Rang tasviri"))
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = "color"  
@@ -50,8 +66,8 @@ class ProductModel(AbstractBaseModel):
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name=_("Chegirma narxi"))
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name=_("Kategoriya"))
     color = models.ManyToManyField(Color, verbose_name=_("Ranglar"), related_name="products")  
-    main_image = models.ImageField(upload_to="products/") 
-    product_images = models.ManyToManyField('ProductImage', related_name="products", blank=True) 
+    main_image = models.ImageField(upload_to="products/", verbose_name=_('Mahsulotning Asosiy Rasmi')) 
+    product_images = models.ManyToManyField('ProductImage', verbose_name=_("Qo'shimcha rasmlari"),related_name="products", blank=True) 
     size = models.ManyToManyField(Size, verbose_name=_("O‘lchamlar"), related_name="products")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
