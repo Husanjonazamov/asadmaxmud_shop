@@ -49,7 +49,9 @@ class ProductModel(AbstractBaseModel):
     discount_percentage = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Chegirma foizi"))
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name=_("Chegirma narxi"))
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name=_("Kategoriya"))
-    color = models.ManyToManyField(Color, verbose_name=_("Ranglar"), related_name="products")  # related_name belgilandi
+    color = models.ManyToManyField(Color, verbose_name=_("Ranglar"), related_name="products")  
+    main_image = models.ImageField(upload_to="products/") 
+    product_images = models.ManyToManyField('ProductImage', related_name="products", blank=True) 
     size = models.ManyToManyField(Size, verbose_name=_("O‘lchamlar"), related_name="products")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
@@ -70,3 +72,18 @@ class ProductModel(AbstractBaseModel):
         db_table = "product"
         verbose_name = _("Mahsulot")
         verbose_name_plural = _("Mahsulotlar")
+        
+        
+        
+        
+class ProductImage(AbstractBaseModel):
+    image = models.ImageField(upload_to='product_image/', verbose_name=_('Mahsulot Rasmi'))
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_('Mahsulot'))
+    
+    
+    class Meta:
+        db_table = 'product_image'
+        verbose_name = 'Mahsulot Rasmi'
+        verbose_name_plural = 'Mahsulot Rasmi'
+    
+    

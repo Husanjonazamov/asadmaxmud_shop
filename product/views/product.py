@@ -5,12 +5,24 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from ..models import ProductModel
-from ..serializers.product import CreateProductSerializer, ListProductSerializer, RetrieveProductSerializer
+from ..models import ProductModel, ProductImage
+from ..serializers.product import (
+        CreateProductSerializer,
+        ListProductSerializer,
+        RetrieveProductSerializer,
+        ProductListSerializer,
+        ProductImageSerializer
+    )
+
+
+class ProductView(ReadOnlyModelViewSet):
+    queryset = ProductModel.objects.all()
+    serializer_class = ProductListSerializer
+
 
 
 @extend_schema(tags=["product"])
-class ProductView(BaseViewSetMixin, ReadOnlyModelViewSet):
+class ProductDetailView(BaseViewSetMixin, ReadOnlyModelViewSet):
     queryset = ProductModel.objects.all()
 
     def get_serializer_class(self) -> Any:
@@ -31,3 +43,6 @@ class ProductView(BaseViewSetMixin, ReadOnlyModelViewSet):
                 perms.extend([AllowAny])
         self.permission_classes = perms
         return super().get_permissions()
+
+
+
