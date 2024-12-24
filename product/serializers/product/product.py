@@ -3,10 +3,9 @@ from rest_framework import serializers
 from ...models import (
     ProductModel,
     CategoryModel,
-    Color,
-    Size,
     ProductImage
 )
+from product.models.additional import ColorModel, SizeModel, PromotionModel
 
 # -------------------------------
 # Individual Field Serializers
@@ -20,19 +19,33 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Color
+        model = ColorModel
         fields = ['id', 'name', 'image']
 
 
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Size
+        model = SizeModel
         fields = ['id', 'size_name']
+
+# -------------------------------
+# Promotion Serializers
+# -------------------------------
+
+
+
+class PromotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PromotionModel
+        fields = ['id', 'name']
+
 
 
 # -------------------------------
 # Product Serializers
 # -------------------------------
+
+
 
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,6 +63,7 @@ class BaseProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     color = ColorSerializer(many=True, read_only=True)
     size = SizeSerializer(many=True, read_only=True)
+    promotion = PromotionSerializer(many=True, read_only=True)
     product_images = serializers.SerializerMethodField()
 
     class Meta:

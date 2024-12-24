@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_core.models import AbstractBaseModel
 from decimal import Decimal
-
+from product.models.additional import ColorModel, SizeModel, PromotionModel
 
 
 class CategoryModel(AbstractBaseModel):
@@ -20,45 +20,6 @@ class CategoryModel(AbstractBaseModel):
 
 
 
-class Color(models.Model):
-    COLOR_CHOICES = [
-        ("Ko'k", "Ko'k"),
-        ('Qizil', 'Qizil'),
-        ('Qora', 'Qora'),
-        ('Yashil', 'Yashil'),
-        ('Oq', 'Oq'),
-        ('Sariq', 'Sariq'),
-        ('Kulrang', 'Kulrang'),
-        ('Jigarrang', 'Jigarrang'),
-        ('Pushti', 'Pushti'),
-        ('Siyohrang', 'Siyohrang'),
-    ]
-    name = models.CharField(max_length=55, choices=COLOR_CHOICES, verbose_name=_('nomini kiriting'))
-    image = models.ImageField(upload_to='color/', verbose_name=_("Rang tasviri"))
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = "color"  
-        verbose_name = _("Rang")
-        verbose_name_plural = _("Ranglar")
-
-
-
-class Size(models.Model):
-    size_name = models.CharField(max_length=50, verbose_name=_("O‘lcham nomi"))
-
-    def __str__(self):
-        return self.size_name
-
-    class Meta:
-        db_table = "size"  
-        verbose_name = _("O‘lcham")
-        verbose_name_plural = _("O‘lchamlar")
-        
-        
-        
 
 class ProductModel(AbstractBaseModel):
     name = models.CharField(max_length=255, verbose_name=_("Mahsulot nomi"))
@@ -67,9 +28,10 @@ class ProductModel(AbstractBaseModel):
     discount_percentage = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Chegirma foizi"))
     discount_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name=_("Chegirma narxi"))
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name=_("Kategoriya"))
-    color = models.ManyToManyField(Color, verbose_name=_("Ranglar"), related_name="products")  
+    color = models.ManyToManyField(ColorModel, verbose_name=_("Ranglar"), related_name="products")  
     main_image = models.ImageField(upload_to="products/", verbose_name=_('Mahsulotning Asosiy Rasmi')) 
-    size = models.ManyToManyField(Size, verbose_name=_("O‘lchamlar"), related_name="products")
+    size = models.ManyToManyField(SizeModel, verbose_name=_("O‘lchamlar"), related_name="products")
+    promotion = models.ManyToManyField(PromotionModel, verbose_name=_("Aksiyalar"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
     

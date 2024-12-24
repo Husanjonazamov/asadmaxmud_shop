@@ -4,9 +4,8 @@ from ..models import (
     ProductModel,
     CategoryModel,
     ProductImage,
-    Size,
-    Color,
 )
+from product.models.additional import ColorModel, SizeModel, PromotionModel
 
 
 class ProductImageInline(admin.TabularInline): 
@@ -19,8 +18,6 @@ class ProductImageAdmin(admin.ModelAdmin):
         "product",
         "__str__",
     )
-    
-    
 
 
 @admin.register(CategoryModel)
@@ -42,7 +39,7 @@ class ProductAdmin(admin.ModelAdmin):
     
     
 
-@admin.register(Size)
+@admin.register(SizeModel)
 class SizeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
@@ -50,9 +47,17 @@ class SizeAdmin(admin.ModelAdmin):
     )
     
 
-@admin.register(Color)
+@admin.register(ColorModel)
 class ColorAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "__str__",
     )
+    
+@admin.register(PromotionModel)
+class PromotionModelAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "__str__",
+    )
+
