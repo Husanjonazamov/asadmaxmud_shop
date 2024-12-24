@@ -11,7 +11,8 @@ from ..serializers.product import (
         ListProductSerializer,
         RetrieveProductSerializer,
         ProductListSerializer,
-        CategorySerializer
+        CategorySerializer,
+        BaseProductSerializer
     )
 
 
@@ -26,28 +27,37 @@ class CategoryView(ReadOnlyModelViewSet):
     serializer_class = CategorySerializer
     
 
-@extend_schema(tags=["product"])
-class ProductDetailView(BaseViewSetMixin, ReadOnlyModelViewSet):
+    
+class ProductDetailView(ReadOnlyModelViewSet):
     queryset = ProductModel.objects.all()
+    serializer_class = BaseProductSerializer
 
-    def get_serializer_class(self) -> Any:
-        match self.action:
-            case "list":
-                return ListProductSerializer
-            case "retrieve":
-                return RetrieveProductSerializer
-            case "create":
-                return CreateProductSerializer
-            case _:
-                return ListProductSerializer
 
-    def get_permissions(self) -> Any:
-        perms = []
-        match self.action:
-            case _:
-                perms.extend([AllowAny])
-        self.permission_classes = perms
-        return super().get_permissions()
+
+
+
+# @extend_schema(tags=["product"])
+# class ProductDetailView(BaseViewSetMixin, ReadOnlyModelViewSet):
+#     queryset = ProductModel.objects.all()
+
+#     def get_serializer_class(self) -> Any:
+#         match self.action:
+#             case "list":
+#                 return ListProductSerializer
+#             case "retrieve":
+#                 return RetrieveProductSerializer
+#             case "create":
+#                 return CreateProductSerializer
+#             case _:
+#                 return ListProductSerializer
+
+#     def get_permissions(self) -> Any:
+#         perms = []
+#         match self.action:
+#             case _:
+#                 perms.extend([AllowAny])
+#         self.permission_classes = perms
+#         return super().get_permissions()
 
 
 

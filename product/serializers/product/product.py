@@ -50,7 +50,7 @@ class BaseProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     color = ColorSerializer(many=True, read_only=True)
     size = SizeSerializer(many=True, read_only=True)
-    product_images = ProductImageSerializer(many=True, read_only=True)
+    product_images = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductModel
@@ -59,6 +59,12 @@ class BaseProductSerializer(serializers.ModelSerializer):
             "updated_at",
             'main_image'
         ]
+
+    def get_product_images(self, obj):
+        images = ProductImage.objects.filter(product_id=obj.id)
+        if not images.exists():
+            return []  
+        return ProductImageSerializer(images, many=True).data
 
 
 class ListProductSerializer(BaseProductSerializer):

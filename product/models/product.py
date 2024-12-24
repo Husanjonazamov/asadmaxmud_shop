@@ -69,7 +69,6 @@ class ProductModel(AbstractBaseModel):
     category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, verbose_name=_("Kategoriya"))
     color = models.ManyToManyField(Color, verbose_name=_("Ranglar"), related_name="products")  
     main_image = models.ImageField(upload_to="products/", verbose_name=_('Mahsulotning Asosiy Rasmi')) 
-    product_images = models.ManyToManyField('ProductImage', verbose_name=_("Qo'shimcha rasmlari"),related_name="products", blank=True) 
     size = models.ManyToManyField(Size, verbose_name=_("O‘lchamlar"), related_name="products")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
