@@ -1,4 +1,4 @@
-version: '3.11'
+version: '3'
 
 services:
   bot:
@@ -6,12 +6,18 @@ services:
       context: .
     volumes:
       - .:/code
-      - sqlite_data:/code/db  
-    environment:
-      - DEBUG=True
+      - sqlite_data:/code/db
+    env_file:
+      - .env  
     ports:
       - "8000:8000"
-    entrypoint: ["/entrypoint.sh"]
+    command: |
+      bash -c "
+        python3 manage.py migrate & 
+        python3 manage.py runserver 0.0.0.0:8000 & 
+        python3 bot.py & 
+        wait
+      "
 
 volumes:
   sqlite_data:
