@@ -1,0 +1,17 @@
+version: '3.11'
+
+services:
+  bot:
+    build:
+      context: .
+    volumes:
+      - .:/code
+      - sqlite_data:/code/db  
+    environment:
+      - DEBUG=True
+    ports:
+      - "8000:8000"
+    entrypoint: ["/entrypoint.sh"]
+
+volumes:
+  sqlite_data:
