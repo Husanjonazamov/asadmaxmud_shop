@@ -87,7 +87,6 @@ class RetrieveProductSerializer(BaseProductSerializer):
     class Meta(BaseProductSerializer.Meta):...
         
 
-
 class CreateProductSerializer(BaseProductSerializer):
     class Meta(BaseProductSerializer.Meta):...
         

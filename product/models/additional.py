@@ -44,7 +44,6 @@ class SizeModel(AbstractBaseModel):
         
         
         
-        
 class PromotionModel(AbstractBaseModel):
     name = models.CharField(max_length=100, verbose_name=_("Aksiya nomi"))
     
@@ -57,3 +56,17 @@ class PromotionModel(AbstractBaseModel):
         verbose_name_plural = 'Aksiyalar'
     
         
+        
+        
+class BannerModel(AbstractBaseModel):
+    name = models.CharField(max_length=200, verbose_name=_("Banner nomi"))
+    image = models.ImageField(upload_to="banner/", verbose_name=_("Banner Rasmi"))
+    
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table = 'banner'
+        verbose_name = 'Banner'
+        verbose_name_plural = 'Banner'
