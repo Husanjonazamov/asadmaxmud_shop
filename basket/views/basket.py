@@ -1,33 +1,42 @@
 from typing import Any
 
 from django_core.mixins import BaseViewSetMixin
-from drf_spectacular.utils import extend_schema
+from typing import Any
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
+from drf_spectacular.utils import extend_schema
 
-from ..models import CartItemModel
-from ..serializers.basket import CreateBasketSerializer, ListBasketSerializer, RetrieveBasketSerializer
+from ..models import CartModel, CartItemModel
+from ..serializers.basket import CreateBasketSerializer
+from product.models.product import ProductModel
+from product.models.additional import ColorModel, SizeModel
+from users.models.users import UserModel
+
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 
-@extend_schema(tags=["basket"])
-class BasketView(BaseViewSetMixin, ReadOnlyModelViewSet):
+
+
+class BasketView(viewsets.ModelViewSet):
     queryset = CartItemModel.objects.all()
+    permission_classes = [IsAuthenticated]  # Foydalanuvchi autentifikatsiyasi
 
-    def get_serializer_class(self) -> Any:
-        match self.action:
-            case "list":
-                return ListBasketSerializer
-            case "retrieve":
-                return RetrieveBasketSerializer
-            case "create":
-                return CreateBasketSerializer
-            case _:
-                return ListBasketSerializer
+    def get_serializer_class(self):
+        return CreateBasketSerializer
 
-    def get_permissions(self) -> Any:
-        perms = []
-        match self.action:
-            case _:
-                perms.extend([AllowAny])
-        self.permission_classes = perms
-        return super().get_permissions()
+    def perform_create(self, serializer):
+        # Serializerni yaratish va modelga saqlash
+        serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        # POST so'rovi orqali kartaga yangi mahsulot qo'shish
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

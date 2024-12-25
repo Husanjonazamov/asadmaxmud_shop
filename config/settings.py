@@ -100,6 +100,16 @@ TEMPLATES = [
 ]
 
 
+# ASADMAXMUD_SHOP/settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'users.authentication.TelegramAuthentication',  # Yangi autentifikatsiya klassingiz
+    ],
+}
+
+
+
 WSGI_APPLICATION = "config.wsgi.application"
 
 

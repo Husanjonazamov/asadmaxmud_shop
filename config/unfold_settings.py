@@ -139,11 +139,11 @@ UNFOLD = {
                         "icon": "receipt_long",  # Django Unfold ikonkasi
                         "link": reverse_lazy("admin:order_ordermodel_changelist"),
                     },
-                    {
-                        "title": _("Buyurtma Buyurmlari"),
-                        "icon": "receipt_long",  # Django Unfold ikonkasi
-                        "link": reverse_lazy("admin:order_orderitemmodel_changelist"),
-                    },
+                    # {
+                    #     "title": _("Buyurtma Buyurmlari"),
+                    #     "icon": "receipt_long",  # Django Unfold ikonkasi
+                    #     "link": reverse_lazy("admin:order_orderitemmodel_changelist"),
+                    # },
                 ],
             },
         ],
