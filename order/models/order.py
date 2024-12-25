@@ -31,7 +31,6 @@ class OrderModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqt'))
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name=_("Umumiy narx"))
 
-
     def calculate_total_price(self):
         self.total_price = sum(item.total_price() for item in self.items.all())
         self.save()
@@ -43,19 +42,17 @@ class OrderModel(models.Model):
         db_table = "order"
         verbose_name = _("Buyurtma")
         verbose_name_plural = _("Buyurtmalar")
-        
-        
+
 
 class OrderItemModel(models.Model):
     order = models.ForeignKey(OrderModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Buyurtma"))
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_("Mahsulot"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Miqdor"))
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Narx"))
-    color = models.ForeignKey(ColorModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Rang"))
-    size = models.ForeignKey(SizeModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("O‘lcham"))
+    color = models.ForeignKey(ColorModel, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Rang"))
+    size = models.ForeignKey(SizeModel, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("O‘lcham"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqt"))
-    
-    
+
     def total_price(self):
         return self.quantity * self.price
 
