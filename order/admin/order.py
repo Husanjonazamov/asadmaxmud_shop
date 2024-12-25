@@ -1,12 +1,17 @@
 from django.contrib import admin
 
-from ..models import OrderModel
-from unfold.admin import ModelAdmin as UnfoldModelAdmn
+from ..models import Order, OrderItem
 
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "__str__",
+    )
 
-@admin.register(OrderModel)
-class OrderAdmin(UnfoldModelAdmn):
+@admin.register(OrderItem)
+class OrderAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "__str__",

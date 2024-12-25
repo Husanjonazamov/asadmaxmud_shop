@@ -5,13 +5,13 @@ from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from ..models import OrderModel
+from ..models import OrderItem
 from ..serializers.order import CreateOrderSerializer, ListOrderSerializer, RetrieveOrderSerializer
 
 
 @extend_schema(tags=["order"])
 class OrderView(BaseViewSetMixin, ReadOnlyModelViewSet):
-    queryset = OrderModel.objects.all()
+    queryset = OrderItem.objects.all()
 
     def get_serializer_class(self) -> Any:
         match self.action:

@@ -1,10 +1,18 @@
 from django.contrib import admin
 
-from ..models import BasketModel
-from unfold.admin import ModelAdmin as UnfoldModelAdmin 
+from ..models import Cart, CartItem
 
-@admin.register(BasketModel)
-class BasketAdmin(UnfoldModelAdmin):
+
+@admin.register(Cart)
+class BasketAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "__str__",
+    )
+
+
+@admin.register(CartItem)
+class BasketAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "__str__",
