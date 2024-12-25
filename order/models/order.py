@@ -5,7 +5,7 @@ from product.models.product import ProductModel
 from product.models.additional import SizeModel, ColorModel
 
 
-class Order(models.Model):
+class OrderModel(models.Model):
     DELIVERY_CHOICES = [
         ('delivery', 'Dostavka'),
         ('pickup', 'Olib Ketish'),
@@ -41,8 +41,8 @@ class Order(models.Model):
         verbose_name = _("Buyurtma")
         verbose_name_plural = _("Buyurtmalar")
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE, verbose_name=_("Buyurtma"))
+class OrderItemModel(models.Model):
+    order = models.ForeignKey(OrderModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Buyurtma"))
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_("Mahsulot"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Miqdor"))
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Narx"))

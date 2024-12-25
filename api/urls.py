@@ -15,8 +15,11 @@ router.register(r"category", CategoryView, basename='category')
 
 # users urls
 router.register(r"users", UserView, basename='users')
+
+# add urls
 router.register(r"cart", BasketView, basename='cart')
 router.register(r"order", OrderView, basename='order')
+
 
 urlpatterns = [
     path("", include(router.urls)),

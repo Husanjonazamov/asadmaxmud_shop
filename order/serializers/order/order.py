@@ -1,11 +1,11 @@
 from rest_framework import serializers
 from product.serializers.product.product import ColorSerializer, SizeSerializer, ProductListSerializer
-from ...models import Order, OrderItem
+from ...models import OrderModel, OrderItemModel
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Order
+        model = OrderModel
         # fields = ['name','phone', 'address', 'total_price']
         fields = '__all__'
 
@@ -17,7 +17,7 @@ class BaseOrderSerializer(serializers.ModelSerializer):
     size = SizeSerializer(read_only=True)
 
     class Meta:
-        model = OrderItem
+        model = OrderItemModel
         exclude = []
 
 

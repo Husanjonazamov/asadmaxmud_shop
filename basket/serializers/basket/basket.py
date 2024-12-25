@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from product.serializers.product.product import ColorSerializer, SizeSerializer, ProductListSerializer
 
-from ...models import Cart, CartItem
+from ...models import CartModel, CartItemModel
 
 
 class CartSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)  # yoki boshqa turdagi maydon
     class Meta:
-        model = Cart
+        model = CartModel
         fields = ['user',]
 
 
@@ -18,7 +18,7 @@ class BaseBasketSerializer(serializers.ModelSerializer):
     size = SizeSerializer(read_only=True)
 
     class Meta:
-        model = CartItem
+        model = CartItemModel
         exclude = [
             "created_at",
         ]

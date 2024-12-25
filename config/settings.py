@@ -265,7 +265,12 @@ UNFOLD = {
                 {
                     "title": _("Savatcha"),
                     "icon": "shopping_cart",  # Django Unfold ikonkasi
-                    "link": reverse_lazy("admin:basket_basketmodel_changelist"),
+                    "link": reverse_lazy("admin:basket_cartmodel_changelist"),
+                },
+                {
+                    "title": _("Savat Buyumlar"),
+                    "icon": "shopping_cart",  # Django Unfold ikonkasi
+                    "link": reverse_lazy("admin:basket_cartitemmodel_changelist"),
                 },
                 {
                     "title": _("Buyurtmalar"),
