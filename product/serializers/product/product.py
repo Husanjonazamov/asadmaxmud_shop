@@ -40,11 +40,9 @@ class PromotionSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
-
 # -------------------------------
 # Product Serializers
 # -------------------------------
-
 
 
 class ProductListSerializer(serializers.ModelSerializer):

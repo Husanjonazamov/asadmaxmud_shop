@@ -6,6 +6,8 @@ from ..models import (
     ProductImage,
 )
 from product.models.additional import ColorModel, SizeModel, PromotionModel
+from unfold.admin import ModelAdmin as UnfoldModelAdmn
+
 
 
 class ProductImageInline(admin.TabularInline): 
@@ -13,7 +15,7 @@ class ProductImageInline(admin.TabularInline):
     extra = 3
 
 @admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
+class ProductImageAdmin(UnfoldModelAdmn):
     list_display = (
         "product",
         "__str__",
@@ -21,7 +23,7 @@ class ProductImageAdmin(admin.ModelAdmin):
 
 
 @admin.register(CategoryModel)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(UnfoldModelAdmn):
     list_display = (
         "name",
         "__str__",
@@ -30,7 +32,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
 
 @admin.register(ProductModel)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(UnfoldModelAdmn):
     list_display = (
         "name",
         "__str__",
@@ -40,7 +42,7 @@ class ProductAdmin(admin.ModelAdmin):
     
 
 @admin.register(SizeModel)
-class SizeAdmin(admin.ModelAdmin):
+class SizeAdmin(UnfoldModelAdmn):
     list_display = (
         "id",
         "__str__",
@@ -48,14 +50,14 @@ class SizeAdmin(admin.ModelAdmin):
     
 
 @admin.register(ColorModel)
-class ColorAdmin(admin.ModelAdmin):
+class ColorAdmin(UnfoldModelAdmn):
     list_display = (
         "id",
         "__str__",
     )
     
 @admin.register(PromotionModel)
-class PromotionModelAdmin(admin.ModelAdmin):
+class PromotionModelAdmin(UnfoldModelAdmn):
     list_display = (
         "id",
         "__str__",
