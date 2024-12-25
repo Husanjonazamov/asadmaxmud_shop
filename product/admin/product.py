@@ -37,10 +37,11 @@ class ProductAdmin(UnfoldModelAdmn):
         "name",
         "__str__",
     )
+    exclude = ('discount_price',)
     inlines = [ProductImageInline]
     
     
-
+                                                                                                                            
 @admin.register(SizeModel)
 class SizeAdmin(UnfoldModelAdmn):
     list_display = (

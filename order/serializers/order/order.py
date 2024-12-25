@@ -3,11 +3,13 @@ from product.serializers.product.product import ColorSerializer, SizeSerializer,
 from ...models import OrderModel, OrderItemModel
 
 
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = OrderModel
-        # fields = ['name','phone', 'address', 'total_price']
-        fields = '__all__'
+        model = OrderItemModel
+        fields = ['order','product', 'quantity', 'price', 'color', 'size']
+        # fields = '__all__'
 
 
 class BaseOrderSerializer(serializers.ModelSerializer):
@@ -17,7 +19,7 @@ class BaseOrderSerializer(serializers.ModelSerializer):
     size = SizeSerializer(read_only=True)
 
     class Meta:
-        model = OrderItemModel
+        model = OrderModel
         exclude = []
 
 

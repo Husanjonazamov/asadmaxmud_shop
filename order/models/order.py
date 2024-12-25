@@ -10,6 +10,9 @@ class OrderModel(models.Model):
         ('delivery', 'Dostavka'),
         ('pickup', 'Olib Ketish'),
     ]
+    PAYMENT = [
+        ('cash', "Naqt pul")
+    ]
 
     delivery_type = models.CharField(
         max_length=50,
@@ -19,7 +22,7 @@ class OrderModel(models.Model):
     )
     payment_method = models.CharField(
         max_length=50,
-        default='Naqd pul',
+        choices=PAYMENT,
         verbose_name=_("To'lov turi")
     )
     name = models.CharField(max_length=255, verbose_name=_('Ism'))
@@ -40,6 +43,8 @@ class OrderModel(models.Model):
         db_table = "order"
         verbose_name = _("Buyurtma")
         verbose_name_plural = _("Buyurtmalar")
+        
+        
 
 class OrderItemModel(models.Model):
     order = models.ForeignKey(OrderModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Buyurtma"))
@@ -49,6 +54,8 @@ class OrderItemModel(models.Model):
     color = models.ForeignKey(ColorModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Rang"))
     size = models.ForeignKey(SizeModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("O‘lcham"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqt"))
+    
+    
     def total_price(self):
         return self.quantity * self.price
 

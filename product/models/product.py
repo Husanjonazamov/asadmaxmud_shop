@@ -21,6 +21,7 @@ class CategoryModel(AbstractBaseModel):
 
 
 
+
 class ProductModel(AbstractBaseModel):
     name = models.CharField(max_length=255, verbose_name=_("Mahsulot nomi"))
     description = models.TextField(verbose_name=_("Tavsif"))
@@ -31,18 +32,17 @@ class ProductModel(AbstractBaseModel):
     color = models.ManyToManyField(ColorModel, verbose_name=_("Ranglar"), related_name="products")  
     main_image = models.ImageField(upload_to="products/", verbose_name=_('Mahsulotning Asosiy Rasmi')) 
     size = models.ManyToManyField(SizeModel, verbose_name=_("O‘lchamlar"), related_name="products")
-    promotion = models.ManyToManyField(PromotionModel, verbose_name=_("Aksiyalar"))
+    promotion = models.ManyToManyField(PromotionModel, verbose_name=_("Aksiyalar"), blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
     
-
-
     def save(self, *args, **kwargs):
         if self.discount_percentage:
             self.discount_price = self.price * (1 - Decimal(self.discount_percentage) / 100)
         else:
-            self.discount_price = self.price
-        super().save(*args, **kwargs)
+            self.discount_price = self.price 
+        super(ProductModel, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return self.name

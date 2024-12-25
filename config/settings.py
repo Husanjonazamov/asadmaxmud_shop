@@ -30,6 +30,20 @@ ALLOWED_HOSTS = [
 ]
 
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  
+    'https://yourfrontend.com',  
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://asadmaxmud.azamovdev.uz'
+    ]
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -276,6 +290,11 @@ UNFOLD = {
                     "title": _("Buyurtmalar"),
                     "icon": "receipt_long",  # Django Unfold ikonkasi
                     "link": reverse_lazy("admin:order_ordermodel_changelist"),
+                },
+                {
+                    "title": _("Buyurtma Buyurmlari"),
+                    "icon": "receipt_long",  # Django Unfold ikonkasi
+                    "link": reverse_lazy("admin:order_orderitemmodel_changelist"),
                 },
             ],
         },
