@@ -11,7 +11,6 @@ class CartModel(models.Model):
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, verbose_name=_("Foydalanuvchi"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
 
-
     def __str__(self):
         return f"Savat #{self.id} ({self.user})"
 
@@ -29,8 +28,9 @@ class CartItemModel(models.Model):
     size = models.ForeignKey(SizeModel, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("O‘lcham"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
 
+    @property
     def total_price(self):
-        return self.quantity * (self.product.discount_price or self.product.price)
+        return Decimal(self.quantity) * Decimal(self.product.discount_price or self.product.price)
 
     def __str__(self):
         return f"{self.product.name} ({self.quantity})"

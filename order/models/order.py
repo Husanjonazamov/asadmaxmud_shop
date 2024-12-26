@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from product.models.product import ProductModel
-from product.models.additional import SizeModel, ColorModel
+from basket.models.basket import CartItemModel
 from django_core.models import AbstractBaseModel
+from users.models import UserModel  
 
 
 
@@ -16,6 +16,9 @@ class OrderModel(AbstractBaseModel):
         ('cash', "Naqt pul"),
     ]
 
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, verbose_name=_('Foydalanuvchi'))
+
+    basket = models.OneToOneField(CartItemModel, on_delete=models.CASCADE, verbose_name=_("Savat"))
     delivery_type = models.CharField(
         max_length=50,
         choices=DELIVERY_CHOICES,
@@ -38,9 +41,8 @@ class OrderModel(AbstractBaseModel):
         self.total_price = self.calculate_total_price()
         super().save(*args, **kwargs)
 
-
     def calculate_total_price(self):
-        return sum(item.total_price for item in self.items.all())
+        return sum(item.total_price for item in self.basket.items.all())
 
     def __str__(self):
         return f"Buyurtma #{self.id} ({self.name})"
@@ -49,25 +51,3 @@ class OrderModel(AbstractBaseModel):
         db_table = "order"
         verbose_name = _("Buyurtma")
         verbose_name_plural = _("Buyurtmalar")
-
-
-class OrderItemModel(AbstractBaseModel):
-    order = models.ForeignKey(OrderModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Buyurtma"))
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_("Mahsulot"))
-    quantity = models.PositiveIntegerField(default=1, verbose_name=_("Miqdor"))
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Narx"))
-    color = models.ForeignKey(ColorModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Rang"))
-    size = models.ForeignKey(SizeModel, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("O‘lcham"))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqt"))
-
-    @property
-    def total_price(self):
-        return self.quantity * self.price
-
-    def __str__(self):
-        return f"{self.product.name} ({self.quantity})"
-
-    class Meta:
-        db_table = "order_item"
-        verbose_name = _("Buyurtmadagi Mahsulot")
-        verbose_name_plural = _("Buyurtmadagi Mahsulotlar")

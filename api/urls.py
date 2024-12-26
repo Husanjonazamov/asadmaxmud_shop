@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from product.views.product import ProductView, ProductDetailView, CategoryView, BannerView
+from product.views.product import ProductViewSet, ProductDetailView, CategoryView, BannerView
 from users.views.users import UserView
 from order.views.order import OrderView
 from basket.views.basket import BasketView
@@ -8,7 +8,7 @@ from basket.views.basket import BasketView
 
 router = DefaultRouter()
 # product urls
-router.register(r'product', ProductView, basename='product')
+router.register(r'products', ProductViewSet, basename='product')
 router.register(r"product_detail", ProductDetailView, basename='product_detail')
 
 # category urls

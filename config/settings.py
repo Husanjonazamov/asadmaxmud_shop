@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     # install apps
     'rest_framework',
     'django_core',
+    'django_filters',
     
     # other apps
     'users',
@@ -102,16 +103,17 @@ TEMPLATES = [
 
 # ASADMAXMUD_SHOP/settings.py
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'users.authentication.TelegramAuthentication',  # Yangi autentifikatsiya klassingiz
-    ],
-}
-
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'users.authentication.TelegramAuthentication',  
+#     ],
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticated',  # Foy
+#     ],
+# }
 
 
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

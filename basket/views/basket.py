@@ -22,17 +22,15 @@ from rest_framework.permissions import IsAuthenticated
 
 class BasketView(viewsets.ModelViewSet):
     queryset = CartItemModel.objects.all()
-    permission_classes = [IsAuthenticated]  # Foydalanuvchi autentifikatsiyasi
+    permission_classes = [IsAuthenticated]  
 
     def get_serializer_class(self):
         return CreateBasketSerializer
 
     def perform_create(self, serializer):
-        # Serializerni yaratish va modelga saqlash
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        # POST so'rovi orqali kartaga yangi mahsulot qo'shish
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)

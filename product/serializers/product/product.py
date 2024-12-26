@@ -33,12 +33,10 @@ class SizeSerializer(serializers.ModelSerializer):
 # -------------------------------
 
 
-
 class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PromotionModel
         fields = ['id', 'name']
-
 
 # -------------------------------
 # Product Serializers
@@ -46,6 +44,8 @@ class PromotionSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
+    # category = CategorySerializer(read_only=True) 
+
     class Meta:
         model = ProductModel
         fields = ['id', 'name', 'main_image', 'price', 'discount_percentage', 'discount_price']

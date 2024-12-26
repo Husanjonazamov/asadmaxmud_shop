@@ -7,21 +7,28 @@ from ..serializers.product import (
         BaseProductSerializer
     )
 from ..serializers.product import BannerSerializers
+from django.db.models import Q
 
 
 
 
-class ProductView(ReadOnlyModelViewSet):
+class ProductViewSet(ReadOnlyModelViewSet):
     queryset = ProductModel.objects.all()
     serializer_class = ProductListSerializer
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_name = self.request.query_params.get('category_name', None)
+
+        if category_name:
+            queryset = queryset.filter(Q(category__name__icontains=category_name))  
+        return queryset
 
 
 class CategoryView(ReadOnlyModelViewSet):
     queryset = CategoryModel.objects.all()
     serializer_class = CategorySerializer
     
-
     
 class ProductDetailView(ReadOnlyModelViewSet):
     queryset = ProductModel.objects.all()
