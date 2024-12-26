@@ -7,7 +7,7 @@ from product.models.additional import ColorModel, SizeModel
 from decimal import Decimal
 
 
-class CartModel(models.Model):
+class CartModel(AbstractBaseModel):
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE, verbose_name=_("Foydalanuvchi"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
 
@@ -20,7 +20,8 @@ class CartModel(models.Model):
         verbose_name_plural = _("Savatchalar")
 
 
-class CartItemModel(models.Model):
+
+class CartItemModel(AbstractBaseModel):
     cart = models.ForeignKey(CartModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Savat"))
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_("Mahsulot"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Miqdor"))
