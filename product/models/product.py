@@ -20,8 +20,6 @@ class CategoryModel(AbstractBaseModel):
 
 
 
-
-
 class ProductModel(AbstractBaseModel):
     name = models.CharField(max_length=255, verbose_name=_("Mahsulot nomi"))
     description = models.TextField(verbose_name=_("Tavsif"))

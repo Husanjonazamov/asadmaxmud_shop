@@ -8,6 +8,7 @@ class BaseUserSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+        
 
 class ListUserSerializer(BaseUserSerializer):
     class Meta(BaseUserSerializer.Meta):

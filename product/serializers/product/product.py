@@ -6,10 +6,10 @@ from ...models import (
     ProductImage
 )
 from product.models.additional import ColorModel, SizeModel, PromotionModel
+from django.conf import settings
 
-# -------------------------------
-# Individual Field Serializers
-# -------------------------------
+
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,9 +28,6 @@ class SizeSerializer(serializers.ModelSerializer):
         model = SizeModel
         fields = ['id', 'size_name']
 
-# -------------------------------
-# Promotion Serializers
-# -------------------------------
 
 
 class PromotionSerializer(serializers.ModelSerializer):
@@ -38,9 +35,6 @@ class PromotionSerializer(serializers.ModelSerializer):
         model = PromotionModel
         fields = ['id', 'name']
 
-# -------------------------------
-# Product Serializers
-# -------------------------------
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -51,10 +45,20 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'main_image', 'price', 'discount_percentage', 'discount_price']
 
 
+
 class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = ProductImage
-        fields = ['id', 'image']  
+        fields = ['id', 'image']
+
+    def get_image(self, obj):
+        request = self.context.get('request')
+        relative_url = f"{settings.MEDIA_URL}{obj.image.name}"
+        if request:
+            return request.build_absolute_uri(relative_url)
+        return relative_url
 
 
 class BaseProductSerializer(serializers.ModelSerializer):
@@ -62,7 +66,7 @@ class BaseProductSerializer(serializers.ModelSerializer):
     color = ColorSerializer(many=True, read_only=True)
     size = SizeSerializer(many=True, read_only=True)
     promotion = PromotionSerializer(many=True, read_only=True)
-    product_images = serializers.SerializerMethodField()
+    product_images = ProductImageSerializer(many=True, read_only=True, source='productimage_set')
 
     class Meta:
         model = ProductModel
@@ -71,13 +75,6 @@ class BaseProductSerializer(serializers.ModelSerializer):
             "updated_at",
             'main_image'
         ]
-
-    def get_product_images(self, obj):
-        images = ProductImage.objects.filter(product_id=obj.id)
-        if not images.exists():
-            return []  
-        return ProductImageSerializer(images, many=True).data
-
 
 class ListProductSerializer(BaseProductSerializer):
     class Meta(BaseProductSerializer.Meta):...

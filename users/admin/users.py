@@ -7,6 +7,7 @@ from unfold.admin import ModelAdmin as UnfoldModelAdmin
 @admin.register(UserModel)
 class UserAdmin(UnfoldModelAdmin):
     list_display = (
-        "id",
+        'id',
+        "user_id",
         "__str__",
     )

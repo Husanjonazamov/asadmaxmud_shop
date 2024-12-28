@@ -22,7 +22,7 @@ class CartModel(AbstractBaseModel):
 
 
 class CartItemModel(AbstractBaseModel):
-    cart = models.ForeignKey(CartModel, related_name="items", on_delete=models.CASCADE, verbose_name=_("Savat"))
+    cart = models.ForeignKey('CartModel', related_name="items", on_delete=models.CASCADE, verbose_name=_("Savat"))
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, verbose_name=_("Mahsulot"))
     quantity = models.PositiveIntegerField(default=1, verbose_name=_("Miqdor"))
     color = models.ForeignKey(ColorModel, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Rang"))

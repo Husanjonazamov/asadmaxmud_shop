@@ -10,7 +10,7 @@ services:
     env_file:
       - .env  
     ports:
-      - "8000:8000"
+      - "7806:8000"
     command: |
       bash -c "
         python3 manage.py migrate & 
