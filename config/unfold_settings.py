@@ -117,6 +117,11 @@ UNFOLD = {
                         "icon": "straighten",  # Django Unfold ikonkasi
                         "link": reverse_lazy("admin:product_sizemodel_changelist"),
                     },
+                    {
+                        "title": _("Reklama"),
+                        "icon": "campaign",  
+                        "link": reverse_lazy("admin:bot_advertisingmodel_changelist"),
+                    },
                 ],
             },
             {
@@ -139,11 +144,18 @@ UNFOLD = {
                         "icon": "receipt_long",  # Django Unfold ikonkasi
                         "link": reverse_lazy("admin:order_ordermodel_changelist"),
                     },
-                    # {
-                    #     "title": _("Buyurtma Buyurmlari"),
-                    #     "icon": "receipt_long",  # Django Unfold ikonkasi
-                    #     "link": reverse_lazy("admin:order_orderitemmodel_changelist"),
-                    # },
+                ],
+            },
+            {
+                "title": _("Telegram Bot"),
+                "separator": True,
+                "collapsible": True,
+                "items": [
+                    {
+                        "title": _("Bot haqida malumot"),
+                        "icon": "info",  # Django Unfold ikonkasi
+                        "link": reverse_lazy("admin:bot_aboutmodel_changelist"),
+                    },
                 ],
             },
         ],

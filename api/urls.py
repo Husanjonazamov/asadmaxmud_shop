@@ -4,6 +4,9 @@ from product.views.product import ProductViewSet, ProductDetailView, CategoryVie
 from users.views.users import UserView
 from order.views.order import OrderView
 from basket.views.basket import BasketView, GetBaskerView
+from bot.views import AboutView, AdvertisingView
+
+
 
 router = DefaultRouter()
 # product urls
@@ -22,6 +25,10 @@ router.register(r"users", UserView, basename='users')
 router.register(r"cart", BasketView, basename='cart')
 router.register(r"order", OrderView, basename='order')
 router.register(r"banner", BannerView, basename='banner')
+router.register(r"about", AboutView, basename='about')
+router.register(r"advertising", AdvertisingView, basename='advertising')
+
+
 
 
 urlpatterns = [
