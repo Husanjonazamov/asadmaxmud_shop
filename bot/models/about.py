@@ -24,10 +24,10 @@ class AboutModel(AbstractBaseModel):
 
 
 
-
 class AdvertisingModel(AbstractBaseModel):
     name = models.CharField(verbose_name=_("Reklama nomi"), max_length=100)
     video = models.FileField(upload_to='ads_video/', verbose_name=_('Reklama videosini kiriting'))
+    video_link = models.CharField(max_length=100, verbose_name=_("Video Linki"), null=True, blank=True)
     is_activate = models.BooleanField(default=True, help_text="Reklama faoligini belgilang")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)

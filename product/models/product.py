@@ -5,6 +5,8 @@ from decimal import Decimal
 from product.models.additional import ColorModel, SizeModel, PromotionModel
 
 
+
+
 class CategoryModel(AbstractBaseModel):
     name = models.CharField(max_length=150, verbose_name=_("Kategoriya nomi"))
     image = models.ImageField(upload_to='category/', verbose_name=_("Kategorya rasmi"))
@@ -17,7 +19,6 @@ class CategoryModel(AbstractBaseModel):
         db_table = "category"  
         verbose_name = _("Kategoriya")
         verbose_name_plural = _("Kategoriyalar")
-
 
 
 class ProductModel(AbstractBaseModel):
@@ -33,6 +34,13 @@ class ProductModel(AbstractBaseModel):
     promotion = models.ManyToManyField(PromotionModel, verbose_name=_("Aksiyalar"), blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
+    age_group = models.CharField(max_length=100, verbose_name=_("Yosh chegarasi"), choices=(
+        ("18+", "18 yoshdan katta"),
+        ("<18", "18 yoshdan kichik")
+    ))
+    
+
+    
     
     def save(self, *args, **kwargs):
         if self.discount_percentage:

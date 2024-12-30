@@ -7,7 +7,7 @@ from ...models import AboutModel, AdvertisingModel
 class AdvertisingSerializers(serializers.ModelSerializer):
     class Meta:
         model = AdvertisingModel
-        fields = ['id', 'name', 'video']
+        fields = ['id', 'name', 'video', 'video_link']
 
 
 
