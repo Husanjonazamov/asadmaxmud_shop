@@ -18,7 +18,7 @@ class OrderModel(AbstractBaseModel):
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, verbose_name=_('Foydalanuvchi'))
 
-    basket = models.OneToOneField(CartItemModel, on_delete=models.CASCADE, verbose_name=_("Savat"))
+    basket = models.ManyToManyField(CartItemModel, verbose_name=_("Savat"))
     delivery_type = models.CharField(
         max_length=50,
         choices=DELIVERY_CHOICES,
@@ -28,6 +28,7 @@ class OrderModel(AbstractBaseModel):
     payment_method = models.CharField(
         max_length=50,
         choices=PAYMENT,
+        default='cash',
         verbose_name=_("To'lov turi")
     )
     name = models.CharField(max_length=255, verbose_name=_('Ism'))
@@ -35,14 +36,6 @@ class OrderModel(AbstractBaseModel):
     address = models.TextField(verbose_name=_('Manzil'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqt'))
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name=_("Umumiy narx"))
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.total_price = self.calculate_total_price()
-        super().save(*args, **kwargs)
-
-    def calculate_total_price(self):
-        return sum(item.total_price for item in self.basket.items.all())
 
     def __str__(self):
         return f"Buyurtma #{self.id} ({self.name})"

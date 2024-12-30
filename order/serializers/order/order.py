@@ -4,31 +4,54 @@ from rest_framework import serializers
 import requests
 from decimal import Decimal
 from ...models import OrderModel, CartItemModel
+from basket.models.basket import CartItemModel
+
+from users.models.users import UserModel
 from utils.env import BOT_TOKEN, CHANNEL_ID
 
 
 
+class CreateOrderSerializer(serializers.ModelSerializer):
+    basket_id = serializers.PrimaryKeyRelatedField(queryset=CartItemModel.objects.all(), source='basket', write_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all(), source='user', write_only=True)
 
-class OrderItemModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderModel
+        fields = ['basket_id', 'user_id', 'name', 'phone', 'address', 'total_price']
+
+    def create(self, validated_data):
+        basket_data = validated_data.pop('basket')  # basket ma'lumotlarini ajratamiz
+        user = validated_data.pop('user')
+
+        # OrderModel obyektini yaratamiz
+        order = OrderModel.objects.create(user=user, **validated_data)
+
+        # basket ma'lumotlarini tayinlaymiz
+        order.basket.set([basket_data])  # yoki order.basket.add(basket_data)
+
+        return order
+
+
+class CartItemModelSerializer(serializers.ModelSerializer):
     product_name = serializers.CharField(source="product.name", read_only=True)
     product_image = serializers.ImageField(source="product.main_image", read_only=True)
+    size = serializers.CharField(source="size.size_name", read_only=True)
     color = serializers.CharField(source="color.name", read_only=True)
-    size = serializers.CharField(source="size.name", read_only=True)
 
     class Meta:
         model = CartItemModel
         fields = ['product_name', 'product_image', 'quantity', 'color', 'size', 'total_price']
 
 
-
 class BaseOrderSerializer(serializers.ModelSerializer):
-    items = OrderItemModelSerializer(many=True, read_only=True)  # CartItemModelni Order modelida ko'rsatish
-    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)  # Umumiy narx
+    basket = CartItemModelSerializer(many=True, read_only=True)  # basket maydonini ManyToMany sifatida ko'rsatish
+    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
         model = OrderModel
-        fields = ['id', 'user', 'basket', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'created_at', 'total_price', 'items']
-        read_only_fields = ['id', 'created_at', 'total_price', 'items']
+        fields = ['id', 'user', 'basket', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'created_at', 'total_price']
+        read_only_fields = ['id', 'created_at', 'total_price', 'basket']
+
 
     def create(self, validated_data):
         # request'dan foydalanuvchining ma'lumotlarini olish
