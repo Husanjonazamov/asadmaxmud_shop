@@ -11,6 +11,10 @@ from utils.env import BOT_TOKEN, CHANNEL_ID
 
 
 
+
+
+
+
 class CreateOrderSerializer(serializers.ModelSerializer):
     basket_id = serializers.PrimaryKeyRelatedField(queryset=CartItemModel.objects.all(), source='basket', write_only=True)
     user_id = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all(), source='user', write_only=True)
@@ -20,14 +24,12 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         fields = ['basket_id', 'user_id', 'name', 'phone', 'address', 'total_price']
 
     def create(self, validated_data):
-        basket_data = validated_data.pop('basket')  # basket ma'lumotlarini ajratamiz
+        basket_data = validated_data.pop('basket')  
         user = validated_data.pop('user')
 
-        # OrderModel obyektini yaratamiz
         order = OrderModel.objects.create(user=user, **validated_data)
 
-        # basket ma'lumotlarini tayinlaymiz
-        order.basket.set([basket_data])  # yoki order.basket.add(basket_data)
+        order.basket.set([basket_data]) 
 
         return order
 
@@ -44,7 +46,7 @@ class CartItemModelSerializer(serializers.ModelSerializer):
 
 
 class BaseOrderSerializer(serializers.ModelSerializer):
-    basket = CartItemModelSerializer(many=True, read_only=True)  # basket maydonini ManyToMany sifatida ko'rsatish
+    basket = CartItemModelSerializer(many=True, read_only=True)  
     total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
 
     class Meta:
@@ -54,17 +56,15 @@ class BaseOrderSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
-        # request'dan foydalanuvchining ma'lumotlarini olish
         user = self.context['request'].user
-        validated_data['user'] = user  # validated_data ga userni qo'shish
+        validated_data['user'] = user 
 
-        # Orderni yaratish
         order = super().create(validated_data)
 
-        # Telegram'ga buyurtma yuborish
         self.send_order_to_telegram(order)
 
         return order
+
 
     def send_order_to_telegram(self, order):
         """Telegram API orqali buyurtma ma'lumotlarini yuborish"""

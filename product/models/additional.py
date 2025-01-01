@@ -4,7 +4,6 @@ from django_core.models import AbstractBaseModel
 
 
 
-
 class ColorModel(AbstractBaseModel):
     COLOR_CHOICES = [
         ("Ko'k", "Ko'k"),
@@ -46,6 +45,7 @@ class SizeModel(AbstractBaseModel):
         
 class PromotionModel(AbstractBaseModel):
     name = models.CharField(max_length=100, verbose_name=_("Aksiya nomi"))
+    color_code = models.CharField(max_length=100, verbose_name=_("rangni kodini kiriting"))
     
     def __str__(self):
         return self.name

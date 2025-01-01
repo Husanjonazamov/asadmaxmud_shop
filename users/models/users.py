@@ -3,12 +3,14 @@ from django.utils.translation import gettext_lazy as _
 from django_core.models import AbstractBaseModel
 
 
-class UserModel(AbstractBaseModel):
-    user_id = models.CharField(unique=True, max_length=155, verbose_name=_('user_id'))
-    firstname = models.CharField(max_length=155)
 
+class UserModel(AbstractBaseModel):
+    user_id = models.CharField(unique=True, max_length=155, verbose_name=_('user_id'), null=True, blank=True)
+    name = models.CharField(max_length=155, null=True, blank=True)
+    phone = models.CharField(max_length=100, null=True, blank=True) 
+    
     def __str__(self):
-        return self.firstname
+        return self.name
 
     class Meta:
         db_table = "user"

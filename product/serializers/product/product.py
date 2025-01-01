@@ -31,18 +31,19 @@ class SizeSerializer(serializers.ModelSerializer):
 
 
 class PromotionSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = PromotionModel
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'color_code']
 
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    # category = CategorySerializer(read_only=True) 
+    promotion = PromotionSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductModel
-        fields = ['id', 'name', 'main_image', 'price', 'discount_percentage', 'discount_price', 'age_group']
+        fields = ['id', 'name', 'main_image', 'promotion', 'price', 'discount_percentage', 'discount_price', 'age_group']
 
 
 

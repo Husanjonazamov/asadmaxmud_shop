@@ -4,6 +4,8 @@ from ..models import AboutModel, AdvertisingModel
 from unfold.admin import ModelAdmin as UnfoldModelAdmin
 
 
+
+
 @admin.register(AboutModel)
 class AboutAdmin(UnfoldModelAdmin):
     list_display = (

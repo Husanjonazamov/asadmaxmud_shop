@@ -22,15 +22,6 @@ class ProductImageInline(admin.TabularInline):
 # ----------------------
 
 
-@admin.register(ProductImage)
-class ProductImageAdmin(UnfoldModelAdmn):
-    list_display = (
-        "product",
-        "__str__",
-    )
-
-
-
 @admin.register(ProductModel)
 class ProductAdmin(UnfoldModelAdmn):
     list_display = (

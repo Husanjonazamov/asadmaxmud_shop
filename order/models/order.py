@@ -6,13 +6,12 @@ from users.models import UserModel
 
 
 
-
 class OrderModel(AbstractBaseModel):
     DELIVERY_CHOICES = [
         ('delivery', 'Dostavka'),
         ('pickup', 'Olib Ketish'),
     ]
-    PAYMENT = [
+    PAYMENT = [ 
         ('cash', "Naqt pul"),
     ]
 
