@@ -35,8 +35,8 @@ class ProductModel(AbstractBaseModel):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Yaratilgan vaqti"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Yangilangan vaqti"))
     age_group = models.CharField(max_length=100, verbose_name=_("Yosh chegarasi"), choices=(
+        ("all", "Hamma uchun"),
         ("18+", "18 yoshdan katta"),
-        ("<18", "18 yoshdan kichik")
     ))
     
 

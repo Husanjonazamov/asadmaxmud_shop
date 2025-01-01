@@ -34,7 +34,7 @@ class PromotionSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PromotionModel
-        fields = ['id', 'name', 'color_code']
+        fields = ['id', 'name', 'image']
 
 
 

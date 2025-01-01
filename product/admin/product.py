@@ -31,8 +31,7 @@ class ProductAdmin(UnfoldModelAdmn):
     exclude = ('discount_price',)
     inlines = [ProductImageInline]
     
-    filter_horizontal = ('color', 'size',)
-    
+    filter_horizontal = ('color', 'size', 'promotion')
     
     
 

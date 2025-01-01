@@ -45,7 +45,7 @@ class SizeModel(AbstractBaseModel):
         
 class PromotionModel(AbstractBaseModel):
     name = models.CharField(max_length=100, verbose_name=_("Aksiya nomi"))
-    color_code = models.CharField(max_length=100, verbose_name=_("rangni kodini kiriting"))
+    image = models.ImageField(upload_to='promotion_image/', verbose_name=_("Rasmni kiriting"))
     
     def __str__(self):
         return self.name
