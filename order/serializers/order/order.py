@@ -1,104 +1,52 @@
-# serializers.py
-
 from rest_framework import serializers
-import requests
-from decimal import Decimal
-from ...models import OrderModel, CartItemModel
-from basket.models.basket import CartItemModel
-
-from users.models.users import UserModel
-from utils.env import BOT_TOKEN, CHANNEL_ID
+from order.models import OrderModel, OrderItemModel
+from product.models import ProductModel, ColorModel, SizeModel
+from order.views.order_send import send_telegram_message
 
 
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItemModel
+        fields = ['product', 'color', 'size', 'quantity', 'price']
+
+
+class ListOrderSerializer(serializers.ModelSerializer):
+    order_items = OrderItemSerializer(many=True)
+    class Meta:
+        model = OrderModel
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
 
 
 
-
-
-class CreateOrderSerializer(serializers.ModelSerializer):
-    basket_id = serializers.PrimaryKeyRelatedField(queryset=CartItemModel.objects.all(), source='basket', write_only=True)
-    user_id = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all(), source='user', write_only=True)
+class OrderSerializer(serializers.ModelSerializer):
+    order_items = serializers.ListField(
+        child=OrderItemSerializer(),
+        required=False  
+    )
 
     class Meta:
         model = OrderModel
-        fields = ['basket_id', 'user_id', 'name', 'phone', 'address', 'total_price']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
 
     def create(self, validated_data):
-        basket_data = validated_data.pop('basket')  
-        user = validated_data.pop('user')
-
-        order = OrderModel.objects.create(user=user, **validated_data)
-
-        order.basket.set([basket_data]) 
-
-        return order
-
-
-class CartItemModelSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source="product.name", read_only=True)
-    product_image = serializers.ImageField(source="product.main_image", read_only=True)
-    size = serializers.CharField(source="size.size_name", read_only=True)
-    color = serializers.CharField(source="color.name", read_only=True)
-
-    class Meta:
-        model = CartItemModel
-        fields = ['product_name', 'product_image', 'quantity', 'color', 'size', 'total_price']
-
-
-class BaseOrderSerializer(serializers.ModelSerializer):
-    basket = CartItemModelSerializer(many=True, read_only=True)  
-    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
-
-    class Meta:
-        model = OrderModel
-        fields = ['id', 'user', 'basket', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'created_at', 'total_price']
-        read_only_fields = ['id', 'created_at', 'total_price', 'basket']
-
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user 
-
-        order = super().create(validated_data)
-
-        self.send_order_to_telegram(order)
-
-        return order
-
-
-    def send_order_to_telegram(self, order):
-        """Telegram API orqali buyurtma ma'lumotlarini yuborish"""
-        token = BOT_TOKEN
-        chat_id = CHANNEL_ID
+        request = self.context.get('request')
         
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
+        if not request:
+            raise ValueError("Request object not found in serializer context.")
+        
+        try:
+            order_items_data = validated_data.pop('order_items', [])
+            order = OrderModel.objects.create(**validated_data)
 
-        # Xabarni tayyorlash
-        message = f"\ud83d\uded2 <b>Buyurtma #{order.id}</b>\n"
-        message += f"\ud83d\udcde <b>Telefon:</b> {order.phone}\n"
-        message += f"\ud83d\udccd <b>Manzil:</b> {order.address}\n"
-        message += f"\ud83d\ude9a <b>Yetkazib berish turi:</b> {order.delivery_type}\n"
-        message += f"\ud83d\udcb3 <b>To'lov turi:</b> {order.payment_method}\n"
-        message += f"\ud83d\udcb0 <b>Umumiy narx:</b> {order.total_price} so'm\n\n"
-        message += "\ud83d\udce6 <b>Buyurtma mahsulotlari:</b>\n"
+            for item_data in order_items_data:
+                item_data['order'] = order
+                OrderItemModel.objects.create(**item_data)
 
-        for item in order.items.all():
-            product_image_url = item.product.main_image.url if item.product.main_image else "Rasm yo'q"
-            message += f"\u2022 <b>Mahsulot:</b> {item.product.name}\n"
-            message += f"  \ud83c\udfa8 <b>Rang:</b> {item.color}\n"
-            message += f"  \ud83d\udd22 <b>O'lcham:</b> {item.size}\n"
-            message += f"  \ud83d\udcb8 <b>Narxi:</b> {item.total_price} so'm\n"
-            message += f"  \ud83d\uddbc <b>Rasm:</b> {product_image_url}\n\n"
+            send_telegram_message(order, request=request)
 
-        payload = {
-            "chat_id": chat_id,
-            "text": message,
-            "parse_mode": "HTML"
-        }
+            return order
+        except Exception as e:
+            print(f"Xatolik: {e}")  
+            raise e
 
-        response = requests.post(url, data=payload)
 
-        if response.status_code == 200:
-            print("✅ Xabar muvaffaqiyatli yuborildi!")
-        else:
-            print(f"❌ Xato: {response.status_code}, {response.text}")

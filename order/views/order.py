@@ -1,19 +1,35 @@
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework.viewsets import ModelViewSet
-from drf_spectacular.utils import extend_schema
-from ..serializers.order import CreateOrderSerializer
-from ..models import OrderModel
-from ..serializers.order import BaseOrderSerializer
+from django.db import transaction
+from ..models import OrderModel, OrderItemModel
+from ..serializers import OrderSerializer, ListOrderSerializer
 
 
-class OrderCreateView(ModelViewSet):
-    queryset = OrderModel.objects.all()
-    serializer_class = CreateOrderSerializer
+class OrderView(APIView):
     permission_classes = [AllowAny]
 
+    def get(self, request, *args, **kwargs):
+        orders = OrderModel.objects.all()
+        serializer = ListOrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-@extend_schema(tags=["order"])
-class OrderView(ModelViewSet):
-    queryset = OrderModel.objects.all()
-    serializer_class = BaseOrderSerializer
-    permission_classes = [AllowAny]
+    def post(self, request, *args, **kwargs):
+        data = request.data
+        serializer = OrderSerializer(data=data, context={'request': request}) 
+
+        if serializer.is_valid():
+            try:
+                serializer.save()
+                return Response({"detail": "created"})
+            except Exception as e:
+                return Response(
+                    {"error": str(e)},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        else:
+            return Response(
+                {"errors": serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )

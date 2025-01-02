@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from product.views.product import ProductViewSet, ProductDetailView, CategoryView, BannerView
 from users.views.users import UserView
-from order.views.order import OrderView, OrderCreateView
+from order.views.order import OrderView
 from basket.views.basket import BasketView, GetBaskerView
 from bot.views import AboutView, AdvertisingView
 
@@ -23,8 +23,6 @@ router.register(r"users", UserView, basename='users')
 
 # add urls
 router.register(r"cart", BasketView, basename='cart')
-router.register(r"order", OrderView, basename='order')
-router.register(r"order_create", OrderCreateView, basename='order_create')
 router.register(r"banner", BannerView, basename='banner')
 router.register(r"about", AboutView, basename='about')
 router.register(r"advertising", AdvertisingView, basename='advertising')
@@ -33,4 +31,5 @@ router.register(r"advertising", AdvertisingView, basename='advertising')
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("order/", OrderView.as_view(), name='order')
 ]
