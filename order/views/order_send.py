@@ -49,7 +49,6 @@ def send_telegram_message(order, request):
     if media_files:
         bot.send_media_group(chat_id, media_files)
 
-    print("Xabar va rasmlar muvaffaqiyatli yuborildi.")
 
     # Fayllarni yopishni unutmang
     for media in media_files:
