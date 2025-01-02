@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     # install apps
     'rest_framework',
     'django_core',
-    'django_filters',
     
     # other apps
     'users',
