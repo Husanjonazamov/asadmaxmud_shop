@@ -51,7 +51,7 @@ class ProductModel(AbstractBaseModel):
 
 
     def __str__(self):
-        return self.name
+        return self.name or "None"
 
     class Meta:
         db_table = "product"

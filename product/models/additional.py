@@ -21,7 +21,7 @@ class ColorModel(AbstractBaseModel):
     image = models.ImageField(upload_to='color/', verbose_name=_("Rang tasviri"))
 
     def __str__(self):
-        return self.name
+        return self.name or "None"
 
     class Meta:
         db_table = "color"  
@@ -34,7 +34,7 @@ class SizeModel(AbstractBaseModel):
     size_name = models.CharField(max_length=50, verbose_name=_("O‘lcham nomi"))
 
     def __str__(self):
-        return self.size_name
+        return self.size_name or "None"
 
     class Meta:
         db_table = "size"  
@@ -48,7 +48,7 @@ class PromotionModel(AbstractBaseModel):
     image = models.ImageField(upload_to='promotion_image/', verbose_name=_("Rasmni kiriting"))
     
     def __str__(self):
-        return self.name
+        return self.name or "None"
     
     class Meta:
         db_table = "promotion"
@@ -64,7 +64,7 @@ class BannerModel(AbstractBaseModel):
     
     
     def __str__(self):
-        return self.name
+        return self.name or "None"
     
     class Meta:
         db_table = 'banner'
