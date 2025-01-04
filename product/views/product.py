@@ -8,13 +8,14 @@ from ..serializers.product import (
     )
 from ..serializers.product import BannerSerializers
 from django.db.models import Q
-
+from django_core.paginations import CustomPagination
 
 
 
 class ProductViewSet(ReadOnlyModelViewSet):
     queryset = ProductModel.objects.all()
     serializer_class = ProductListSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
