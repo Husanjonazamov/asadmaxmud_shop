@@ -32,9 +32,7 @@ class OrderModel(AbstractBaseModel):
     phone = models.CharField(max_length=20, verbose_name=_('Telefon raqam'))
     address = models.TextField(verbose_name=_('Manzil'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Yaratilgan vaqt'))
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Umumiy Narx"))
-    def get_total_price(self):
-        return sum(item.item_total for item in self.order_items.all())
+
 
     def __str__(self):
         return f"Buyurtma #{self.id} - {self.name}"

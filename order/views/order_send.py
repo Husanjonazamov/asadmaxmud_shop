@@ -1,4 +1,5 @@
 import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from utils.env import BOT_TOKEN, CHANNEL_ID
 
 
@@ -6,7 +7,6 @@ def send_telegram_message(order, request):
     bot = telebot.TeleBot(BOT_TOKEN)
     chat_id = CHANNEL_ID
 
-    # Hisoblangan umumiy narxni topamiz va butun son sifatida ko'rsatamiz
     total_amount = int(sum(item.quantity * item.price for item in order.order_items.all()))
 
     message_text = (
@@ -19,15 +19,14 @@ def send_telegram_message(order, request):
         f"💰 Jami Buyurtma Narxi: {total_amount} so'm\n\n"
     )
     
-    # Buyurtma detallari
     for item in order.order_items.all():
-        item_total_price = int(item.quantity * item.price)  # Jami narxni butun son sifatida
+        item_total_price = int(item.quantity * item.price)  
         message_text += (
             f"📦 Mahsulot: {item.product.name}\n"
             f"🎨 Rang: {item.color.name if item.color else 'Nomaʼlum'}\n"
             f"📏 Oʻlcham: {item.size.size_name if item.size else 'Nomaʼlum'}\n"
             f"🔢 Miqdor: {item.quantity} ta\n"
-            f"💵 Birlik Narxi: {int(item.price)} so'm\n"  # Birlik narxni butun son sifatida
+            f"💵 Birlik Narxi: {int(item.price)} so'm\n"  
             f"💸 Jami Narx (mahsulot): {item_total_price} so'm\n\n"
         )
 
@@ -46,10 +45,19 @@ def send_telegram_message(order, request):
                     telebot.types.InputMediaPhoto(open(image_path, 'rb'))
                 )
 
+    inline_keyboard = InlineKeyboardMarkup()
+    button = InlineKeyboardButton(
+        text="✅ Buyrtmani tasdiqlash",
+        callback_data=f"check_order_{order.user_id}"  
+    )
+    inline_keyboard.add(button)
+    print(order.user_id)
+
     if media_files:
         bot.send_media_group(chat_id, media_files)
+        # bot.send_message(chat_id, "Buyurtmani Tasdiqlaysizmi ?", reply_markup=inline_keyboard)
+    else:
+        bot.send_message(chat_id, message_text, reply_markup=inline_keyboard)
 
-
-    # Fayllarni yopishni unutmang
     for media in media_files:
         media.media.close()

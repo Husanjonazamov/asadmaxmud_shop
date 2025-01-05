@@ -7,6 +7,22 @@ from ..models import OrderModel, OrderItemModel
 from ..serializers import OrderSerializer, ListOrderSerializer
 
 
+
+class UserOrdersView(APIView):
+    permission_classes = [AllowAny]  
+
+    def get(self, request, user_id):
+        orders = OrderModel.objects.filter(user__id=user_id)
+
+        if not orders.exists():
+            return Response({"message": "Buyurtmalar topilmadi."}, status=404)
+
+        serializer = ListOrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+
+
+
 class OrderView(APIView):
     permission_classes = [AllowAny]
 

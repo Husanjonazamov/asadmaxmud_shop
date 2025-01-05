@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from product.views.product import ProductViewSet, ProductDetailView, CategoryView, BannerView
 from users.views.users import UserView
-from order.views.order import OrderView
+from order.views.order import OrderView, UserOrdersView
 from basket.views.basket import GetBasketView, BasketView
 from bot.views import AboutView, AdvertisingView
 
@@ -31,5 +31,6 @@ router.register(r"advertising", AdvertisingView, basename='advertising')
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("order/", OrderView.as_view(), name='order')
+    path("order/", OrderView.as_view(), name='order'),
+    path("order/<int:user_id>/", UserOrdersView.as_view(), name='getusers'),
 ]
