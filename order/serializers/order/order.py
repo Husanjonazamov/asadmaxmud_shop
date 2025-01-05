@@ -1,13 +1,24 @@
 from rest_framework import serializers
 from order.models import OrderModel, OrderItemModel
-from product.models import ProductModel, ColorModel, SizeModel
+from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
 from order.views.order_send import send_telegram_message
+from django.conf import settings
 
+
+
+
+from django.conf import settings
+from rest_framework import serializers
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductListSerializer()
+    color = ColorSerializer()
+    size = SizeSerializer()
+
     class Meta:
         model = OrderItemModel
         fields = ['product', 'color', 'size', 'quantity', 'price']
+
 
 
 class ListOrderSerializer(serializers.ModelSerializer):
