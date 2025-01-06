@@ -7,8 +7,6 @@ from django.conf import settings
 
 
 
-from django.conf import settings
-from rest_framework import serializers
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductListSerializer()
@@ -19,6 +17,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItemModel
         fields = ['product', 'color', 'size', 'quantity', 'price']
 
+    
 
 
 class ListOrderSerializer(serializers.ModelSerializer):

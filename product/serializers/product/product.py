@@ -40,13 +40,20 @@ class PromotionSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
     promotion = PromotionSerializer(many=True, read_only=True)
+    main_image = serializers.SerializerMethodField()
+
 
     class Meta:
         model = ProductModel
         fields = ['id', 'name', 'main_image', 'promotion', 'price', 'discount_percentage', 'discount_price', 'age_group']
 
+    def get_main_image(self, obj):
+        request = self.context.get('request')
+        if request and obj.main_image:
+            return request.build_absolute_uri(obj.main_image.url)
+        return None
 
-
+    
 class ProductImageSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
 

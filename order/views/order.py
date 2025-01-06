@@ -8,8 +8,9 @@ from ..serializers import OrderSerializer, ListOrderSerializer
 
 
 
+
 class UserOrdersView(APIView):
-    permission_classes = [AllowAny]  
+    permission_classes = [AllowAny]
 
     def get(self, request, user_id):
         orders = OrderModel.objects.filter(user__id=user_id)
@@ -17,9 +18,8 @@ class UserOrdersView(APIView):
         if not orders.exists():
             return Response({"message": "Buyurtmalar topilmadi."}, status=404)
 
-        serializer = ListOrderSerializer(orders, many=True)
+        serializer = ListOrderSerializer(orders, many=True, context={'request': request})
         return Response(serializer.data)
-
 
 
 
