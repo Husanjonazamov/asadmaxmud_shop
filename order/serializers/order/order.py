@@ -2,12 +2,34 @@ from rest_framework import serializers
 from order.models import OrderModel, OrderItemModel
 from product.models import ProductModel, ColorModel, SizeModel
 from order.views.order_send import send_telegram_message
+from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
+
+
+class GetOrderItemSerializers(serializers.ModelSerializer):
+    product = ProductListSerializer()
+    color = ColorSerializer()
+    size = SizeSerializer()
+
+    class Meta:
+        model = OrderItemModel
+        fields = ['product', 'color', 'size', 'quantity', 'price']
+
+
+
+
+class GetListOrderSerializers(serializers.ModelSerializer):
+    order_items = GetOrderItemSerializers(many=True)
+    class Meta:
+        model = OrderModel
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
+
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItemModel
         fields = ['product', 'color', 'size', 'quantity', 'price']
+
 
 
 class ListOrderSerializer(serializers.ModelSerializer):

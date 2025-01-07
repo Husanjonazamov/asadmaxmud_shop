@@ -4,12 +4,12 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from django.db import transaction
 from ..models import OrderModel, OrderItemModel
-from ..serializers import OrderSerializer, ListOrderSerializer
+from ..serializers import OrderSerializer, ListOrderSerializer, GetListOrderSerializers
 
 
 
 class UserOrdersView(APIView):
-    permission_classes = [AllowAny]  
+    permission_classes = [AllowAny]
 
     def get(self, request, user_id):
         orders = OrderModel.objects.filter(user__id=user_id)
@@ -17,7 +17,7 @@ class UserOrdersView(APIView):
         if not orders.exists():
             return Response({"message": "Buyurtmalar topilmadi."}, status=404)
 
-        serializer = ListOrderSerializer(orders, many=True)
+        serializer = GetListOrderSerializers(orders, many=True, context={'request': request})
         return Response(serializer.data)
 
 
