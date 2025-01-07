@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from order.models import OrderModel, OrderItemModel
-from product.models import ProductModel, ColorModel, SizeModel
+from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
 from order.views.order_send import send_telegram_message
 from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
 

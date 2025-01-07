@@ -25,6 +25,7 @@ class ProductImageInline(admin.TabularInline):
 @admin.register(ProductModel)
 class ProductAdmin(UnfoldModelAdmn):
     list_display = (
+        'id',
         "name",
         "__str__",
     )
@@ -45,6 +46,7 @@ class ProductAdmin(UnfoldModelAdmn):
 @admin.register(CategoryModel)
 class CategoryAdmin(UnfoldModelAdmn):
     list_display = (
+        'id',
         "name",
         "__str__",
     )

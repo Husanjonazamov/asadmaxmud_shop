@@ -10,6 +10,7 @@ from ..serializers import OrderSerializer, ListOrderSerializer, GetListOrderSeri
 
 class UserOrdersView(APIView):
     permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
 
     def get(self, request, user_id):
         orders = OrderModel.objects.filter(user__id=user_id)
@@ -19,7 +20,6 @@ class UserOrdersView(APIView):
 
         serializer = GetListOrderSerializers(orders, many=True, context={'request': request})
         return Response(serializer.data)
-
 
 
 

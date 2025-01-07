@@ -17,7 +17,7 @@ class CreateBasketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CartItemModel
-        fields = ['product_id', 'color_id', 'size_id', 'user_id', 'quantity']
+        fields = ['id', 'product_id', 'color_id', 'size_id', 'user_id', 'quantity']
 
 
     def create(self, validated_data):
@@ -47,5 +47,5 @@ class GetBasketSerializers(serializers.ModelSerializer):
     
     class Meta:
         model = CartItemModel
-        fields = ['cart', 'product', 'quantity', 'color', 'size']
+        fields = ['id', 'cart', 'product', 'quantity', 'color', 'size']
     
