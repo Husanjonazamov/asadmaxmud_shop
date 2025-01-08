@@ -3,7 +3,7 @@ from order.models import OrderModel, OrderItemModel
 from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
 from order.views.order_send import send_telegram_message
 from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
-
+from basket.models import CartItemModel, CartModel
 
 class GetOrderItemSerializers(serializers.ModelSerializer):
     product = ProductListSerializer()
@@ -63,6 +63,13 @@ class OrderSerializer(serializers.ModelSerializer):
             for item_data in order_items_data:
                 item_data['order'] = order
                 OrderItemModel.objects.create(**item_data)
+                
+            user = validated_data.get('user')
+            cart = CartModel.objects.filter(user=user).first()
+            if cart:
+                for item_data in order_items_data:
+                    product = item_data.get('product')
+                    CartItemModel.objects.filter(cart=cart, product=product).delete()
 
             send_telegram_message(order, request=request)
 
