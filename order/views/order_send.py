@@ -6,13 +6,18 @@ from utils.env import BOT_TOKEN, CHANNEL_ID
 def send_telegram_message(order, request):
     bot = telebot.TeleBot(BOT_TOKEN)
     chat_id = CHANNEL_ID
-
+    try:
+        user_id = order.user.user_id
+        user_info = bot.get_chat(user_id)
+    except Exception as e:
+        raise Exception(e)
     total_amount = int(sum(item.quantity * item.price for item in order.order_items.all()))
 
     message_text = (
         f"🛒 Yangi Buyurtma\n"
         f"👤 Mijoz: {order.name}\n"
         f"📞 Telefon: {order.phone}\n"
+        f"📞 Telegram: @{user_info.username}\n"
         f"🏠 Manzil: {order.address}\n"
         f"💳 To'lov usuli: {order.payment_method}\n"
         f"🚚 Yetkazib berish usuli: {order.delivery_type}\n\n"
