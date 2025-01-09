@@ -18,6 +18,7 @@ def send_telegram_message(order, request):
         f"👤 Mijoz: {order.name}\n"
         f"📞 Telefon: {order.phone}\n"
         f"📞 Telegram: @{user_info.username}\n"
+        f"🌆 Shahar: {order.counties}\n"
         f"🏠 Manzil: {order.address}\n"
         f"💳 To'lov usuli: {order.payment_method}\n"
         f"🚚 Yetkazib berish usuli: {order.delivery_type}\n\n"
