@@ -3,6 +3,8 @@ from django.contrib import admin
 from ..models import CartModel, CartItemModel
 from unfold.admin import ModelAdmin as  UnfoldModelAdmin
 
+
+
 @admin.register(CartModel)
 class BasketAdmin(UnfoldModelAdmin):
     list_display = (

@@ -12,7 +12,7 @@ class OrderModel(AbstractBaseModel):
         ('pickup', _('Olib Ketish')),
     ]
     PAYMENT_CHOICES = [
-        ('cash', _('Naqt pul')),
+        ('Naqt pul', _('Naqt pul')),
     ]
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, verbose_name=_('Foydalanuvchi'))
@@ -28,6 +28,7 @@ class OrderModel(AbstractBaseModel):
         default='cash',
         verbose_name=_("To'lov turi")
     )
+    counties = models.CharField(max_length=100, verbose_name=_("Viloyat"))
     name = models.CharField(max_length=255, verbose_name=_('Ism'))
     phone = models.CharField(max_length=20, verbose_name=_('Telefon raqam'))
     address = models.TextField(verbose_name=_('Manzil'))

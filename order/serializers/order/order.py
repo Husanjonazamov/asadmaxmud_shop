@@ -5,6 +5,7 @@ from order.views.order_send import send_telegram_message
 from product.serializers import ProductListSerializer, ProductImageSerializer, ColorSerializer, SizeSerializer
 from basket.models import CartItemModel, CartModel
 
+
 class GetOrderItemSerializers(serializers.ModelSerializer):
     product = ProductListSerializer()
     color = ColorSerializer()
@@ -21,7 +22,7 @@ class GetListOrderSerializers(serializers.ModelSerializer):
     order_items = GetOrderItemSerializers(many=True)
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
 
 
 
@@ -36,7 +37,7 @@ class ListOrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True)
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
 
 
 
@@ -48,7 +49,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -64,7 +65,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 item_data['order'] = order
                 OrderItemModel.objects.create(**item_data)
                 
-            user = validated_data.get('user')
+            user = validated_data.get('user')   
             cart = CartModel.objects.filter(user=user).first()
             if cart:
                 for item_data in order_items_data:

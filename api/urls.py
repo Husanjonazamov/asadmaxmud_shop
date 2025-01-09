@@ -12,7 +12,6 @@ router = DefaultRouter()
 # product urls
 router.register(r'products', ProductViewSet, basename='product')
 router.register(r"product_detail", ProductDetailView, basename='product_detail')
-# router.register(r"init-user", InitUserView, basename='inituser')
 router.register(r'cart/(?P<user_id>\d+)', GetBasketView, basename='t')
 
 # category urls
