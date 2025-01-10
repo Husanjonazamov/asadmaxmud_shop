@@ -6,6 +6,7 @@ from django_core.models import AbstractBaseModel
 from users.models import UserModel  
 
 
+
 class OrderModel(AbstractBaseModel):
     DELIVERY_CHOICES = [
         ('delivery', _('Dostavka')),
@@ -28,7 +29,7 @@ class OrderModel(AbstractBaseModel):
         default='cash',
         verbose_name=_("To'lov turi")
     )
-    # counties = models.CharField(max_length=100, verbose_name=_("Viloyat"))
+    country = models.CharField(max_length=100, verbose_name=_("Viloyat"))
     name = models.CharField(max_length=255, verbose_name=_('Ism'))
     phone = models.CharField(max_length=20, verbose_name=_('Telefon raqam'))
     address = models.TextField(verbose_name=_('Manzil'))

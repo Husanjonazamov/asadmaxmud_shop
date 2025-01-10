@@ -22,7 +22,7 @@ class GetListOrderSerializers(serializers.ModelSerializer):
     order_items = GetOrderItemSerializers(many=True)
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'country', 'address', 'order_items']
 
 
 
@@ -37,7 +37,7 @@ class ListOrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True)
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'country', 'address', 'order_items']
 
 
 
@@ -49,7 +49,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderModel
-        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'counties', 'address', 'order_items']
+        fields = ['user', 'delivery_type', 'payment_method', 'name', 'phone', 'country', 'address', 'order_items']
 
     def create(self, validated_data):
         request = self.context.get('request')
