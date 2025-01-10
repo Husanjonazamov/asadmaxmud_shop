@@ -18,10 +18,10 @@ def send_telegram_message(order, request):
         f"👤 Mijoz: {order.name}\n"
         f"📞 Telefon: {order.phone}\n"
         f"📞 Telegram: @{user_info.username}\n"
-        f"🌆 Shahar: {order.counties}\n"
+        f"🌆 Shahar: {order.country}\n"
         f"🏠 Manzil: {order.address}\n"
         f"💳 To'lov usuli: {order.payment_method}\n"
-        f"🚚 Yetkazib berish usuli: {order.delivery_type}\n\n"
+        f"🚚 Yetkazib berish usuli: {order.get_delivery_type_display()}\n\n"
         f"💰 Jami Buyurtma Narxi: {total_amount} so'm\n\n"
     )
     

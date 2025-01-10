@@ -37,7 +37,6 @@ class BasketView(viewsets.ModelViewSet):
             serializer.save(cart=cart, product_id=product_id, quantity=quantity)
 
 
-
 class GetBasketView(viewsets.ModelViewSet):
     serializer_class = GetBasketSerializers
     permission_classes = [AllowAny]
