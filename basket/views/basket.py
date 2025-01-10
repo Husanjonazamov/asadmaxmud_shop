@@ -44,6 +44,7 @@ class GetBasketView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')  
+        print(user_id)
         if user_id:
             return CartItemModel.objects.filter(cart__user_id=user_id)
         return CartItemModel.objects.none()
